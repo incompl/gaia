@@ -425,7 +425,7 @@ var ThreadUI = global.ThreadUI = {
     this.initSentAudio();
 
     // should disable if we have no message input
-    var disableSendMessage = !this.input.value.length;
+    var disableSendMessage = !Compose.getContent().length;
 
     var messageNotLong = this.updateCounter();
 
