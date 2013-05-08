@@ -56,6 +56,9 @@ var ThreadUI = global.ThreadUI = {
     this._mozMobileMessage = navigator.mozMobileMessage ||
                               window.DesktopMockNavigatormozMobileMessage;
 
+    // In case of input, we have to resize the input following UX Specs.
+    Compose.on('input', this.messageComposerInputHandler.bind(this));
+
     // Handler of the 'to-field'
     this.toField.addEventListener(
       'click', this.recipientsContainerClickHandler.bind(this)
@@ -119,10 +122,6 @@ var ThreadUI = global.ThreadUI = {
     this.input.addEventListener(
       'focus', this.messageComposerFocusHandler.bind(this)
     );
-    // In case of input, we have to resize the input following UX Specs.
-    this.input.addEventListener(
-      'input', this.messageComposerInputHandler.bind(this)
-    );
 
     // Delegate to |this.handleEvent|
     this.container.addEventListener(
@@ -179,7 +178,8 @@ var ThreadUI = global.ThreadUI = {
 
   // Method for setting the body of a SMS/MMS from activity
   setMessageBody: function thui_setMessageBody(value) {
-    this.input.value = value;
+    Compose.clear();
+    Compose.append(value);
   },
 
   messageComposerInputHandler: function thui_messageInputHandler(event) {
@@ -392,7 +392,8 @@ var ThreadUI = global.ThreadUI = {
   back: function thui_back() {
     var goBack = (function() {
       this.stopRendering();
-      if (!this.input.value.length) {
+      if (Compose.isEmpty()) {
+        console.log('empty!');
         window.location.hash = '#thread-list';
         return;
       }
@@ -425,7 +426,7 @@ var ThreadUI = global.ThreadUI = {
     this.initSentAudio();
 
     // should disable if we have no message input
-    var disableSendMessage = !Compose.getContent().length;
+    var disableSendMessage = Compose.isEmpty();
 
     var messageNotLong = this.updateCounter();
 
@@ -447,10 +448,10 @@ var ThreadUI = global.ThreadUI = {
   // message
   updateCounter: function thui_updateCount() {
     if (!this._mozMobileMessage.getSegmentInfoForText) {
-      return true;
+ //     return true;
     }
 
-    var value = this.input.value;
+    var value = Compose.getText();
 
     // We set maximum concatenated number of our SMS app to 10 based on:
     // https://bugzilla.mozilla.org/show_bug.cgi?id=813686#c0
@@ -473,14 +474,14 @@ var ThreadUI = global.ThreadUI = {
     var exceededMaxLength = (segments > kMaxConcatenatedMessages);
 
     if (hasMaxLength || exceededMaxLength) {
-      this.input.setAttribute('maxlength', value.length);
+      Compose.setMaxLength(value.length);
       var key = hasMaxLength ?
           'messages-max-length-text' : 'messages-exceeded-length-text';
       var message = navigator.mozL10n.get(key);
       this.maxLengthNotice.querySelector('p').textContent = message;
       this.maxLengthNotice.classList.remove('hide');
     } else {
-      this.input.removeAttribute('maxlength', value.length);
+      Compose.setMaxLength(false);
       this.maxLengthNotice.classList.add('hide');
     }
 
@@ -1049,10 +1050,8 @@ var ThreadUI = global.ThreadUI = {
   cleanFields: function thui_cleanFields(forceClean) {
     var self = this;
     var clean = function clean() {
-      self.input.value = '';
-      self.sendButton.disabled = true;
+      Compose.clear();
       self.sendButton.dataset.counter = '';
-      self.updateInputHeight();
       if (window.location.hash === '#new') {
         self.cleanRecipients();
         self.updateComposerHeader();
@@ -1096,7 +1095,7 @@ var ThreadUI = global.ThreadUI = {
       }
 
       // Retrieve text
-      text = this.input.value;
+      text = Compose.getText();
       if (!text) {
         return;
       }
