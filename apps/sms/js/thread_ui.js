@@ -397,6 +397,7 @@ var ThreadUI = global.ThreadUI = {
     if (segments && (segments > 1 || availableChars <= 10)) {
       counter = availableChars + '/' + segments;
     }
+    document.querySelector('#messages-counter').textContent = counter;
     this.sendButton.dataset.counter = counter;
     var hasMaxLength = (segments === kMaxConcatenatedMessages &&
         !availableChars);
@@ -983,6 +984,7 @@ var ThreadUI = global.ThreadUI = {
     var self = this;
     var clean = function clean() {
       Compose.clear();
+      document.querySelector('#messages-counter').textContent = '';
       self.sendButton.dataset.counter = '';
       if (window.location.hash === '#new') {
         self.initRecipients();
