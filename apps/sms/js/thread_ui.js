@@ -34,6 +34,7 @@ var ThreadUI = global.ThreadUI = {
   init: function thui_init() {
     var _ = navigator.mozL10n.get;
     var templateIds = ['contact', 'highlight', 'message', 'recipient'];
+    this.counterElem = document.querySelector("#messages-counter");
 
     Compose.init('messages-compose-form');
 
@@ -394,12 +395,11 @@ var ThreadUI = global.ThreadUI = {
     var segments = smsInfo.segments;
     var availableChars = smsInfo.charsAvailableInLastSegment;
     var counter = '';
-    var counterElem = document.querySelector('#messages-counter');
     if (segments && (segments > 1 || availableChars <= 10)) {
       counter = availableChars + '/' + segments;
     }
-    counterElem.textContent = counter;
-    counterElem.style.display = counter === '' ? 'none' : 'block';
+    this.counterElem.textContent = counter;
+    this.counterElem.style.display = counter === '' ? 'none' : 'block';
     this.sendButton.dataset.counter = counter;
     var hasMaxLength = (segments === kMaxConcatenatedMessages &&
         !availableChars);
@@ -986,7 +986,7 @@ var ThreadUI = global.ThreadUI = {
     var self = this;
     var clean = function clean() {
       Compose.clear();
-      document.querySelector('#messages-counter').style.display = 'none';
+      self.counterElem.style.display = 'none';
       self.sendButton.dataset.counter = '';
       if (window.location.hash === '#new') {
         self.initRecipients();
