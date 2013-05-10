@@ -500,6 +500,7 @@ form.bottom[role="search"].messages-compose-form {
   border-left: 0.1rem solid rgb(231, 231, 213);
   font-weight: normal;
   font-size: 1.8rem;
+  text-align: left;
   position: absolute;
   right: 0;
   bottom: 4rem;
