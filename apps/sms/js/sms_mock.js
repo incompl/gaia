@@ -652,4 +652,15 @@
     return request;
   };
 
+  MockNavigatormozMobileMessage.getSegmentInfoForText = function(text) {
+    var length = text.length;
+    var segmentLength = 100;
+    var charsAvailableInLastSegment = length % segmentLength;
+    var segments = Math.floor(length / segmentLength);
+    return {
+      segments: segments,
+      charsAvailableInLastSegment: charsAvailableInLastSegment || segmentLength
+    };
+  };
+
 }(this));

@@ -394,10 +394,12 @@ var ThreadUI = global.ThreadUI = {
     var segments = smsInfo.segments;
     var availableChars = smsInfo.charsAvailableInLastSegment;
     var counter = '';
+    var counterElem = document.querySelector('#messages-counter');
     if (segments && (segments > 1 || availableChars <= 10)) {
       counter = availableChars + '/' + segments;
     }
-    document.querySelector('#messages-counter').textContent = counter;
+    counterElem.textContent = counter;
+    counterElem.style.display = counter === '' ? 'none' : 'block';
     this.sendButton.dataset.counter = counter;
     var hasMaxLength = (segments === kMaxConcatenatedMessages &&
         !availableChars);
@@ -984,7 +986,7 @@ var ThreadUI = global.ThreadUI = {
     var self = this;
     var clean = function clean() {
       Compose.clear();
-      document.querySelector('#messages-counter').textContent = '';
+      document.querySelector('#messages-counter').style.display = 'none';
       self.sendButton.dataset.counter = '';
       if (window.location.hash === '#new') {
         self.initRecipients();
