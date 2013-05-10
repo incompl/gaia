@@ -654,12 +654,12 @@
 
   MockNavigatormozMobileMessage.getSegmentInfoForText = function(text) {
     var length = text.length;
-    var segmentLength = 100;
-    var charsAvailableInLastSegment = length % segmentLength;
-    var segments = Math.floor(length / segmentLength);
+    var segmentLength = 160;
+    var charsAvailableInLastSegment = segmentLength - (length % segmentLength);
+    var segments = Math.ceil(length / segmentLength);
     return {
       segments: segments,
-      charsAvailableInLastSegment: charsAvailableInLastSegment || segmentLength
+      charsAvailableInLastSegment: charsAvailableInLastSegment
     };
   };
 

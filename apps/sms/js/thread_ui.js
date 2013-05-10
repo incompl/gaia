@@ -45,7 +45,7 @@ var ThreadUI = global.ThreadUI = {
       'contact-pick-button', 'back-button', 'send-button',
       'delete-button', 'cancel-button',
       'edit-mode', 'edit-form', 'tel-form',
-      'max-length-notice', 'counter'
+      'max-length-notice'
     ].forEach(function(id) {
       this[Utils.camelCase(id)] = document.getElementById('messages-' + id);
     }, this);
@@ -397,8 +397,6 @@ var ThreadUI = global.ThreadUI = {
     if (segments && (segments > 1 || availableChars <= 10)) {
       counter = availableChars + '/' + segments;
     }
-    this.counter.textContent = counter;
-    this.counter.style.display = counter === '' ? 'none' : 'block';
     this.sendButton.dataset.counter = counter;
     var hasMaxLength = (segments === kMaxConcatenatedMessages &&
         !availableChars);
@@ -985,7 +983,6 @@ var ThreadUI = global.ThreadUI = {
     var self = this;
     var clean = function clean() {
       Compose.clear();
-      self.counter.style.display = 'none';
       self.sendButton.dataset.counter = '';
       if (window.location.hash === '#new') {
         self.initRecipients();
