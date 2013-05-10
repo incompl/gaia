@@ -495,7 +495,7 @@ form.bottom[role="search"].messages-compose-form {
   background: #008aaa;
 }
 
-#messages-send-button:before {
+#messages-send-button.has-counter:before {
   content: attr(data-counter);
   color: rgb(133, 133, 133);
   border-left: 0.1rem solid rgb(231, 231, 213);
