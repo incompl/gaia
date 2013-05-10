@@ -655,11 +655,13 @@
   MockNavigatormozMobileMessage.getSegmentInfoForText = function(text) {
     var length = text.length;
     var segmentLength = 160;
-    var charsAvailableInLastSegment = segmentLength - (length % segmentLength);
+    var charsUsedInLastSegment = (length % segmentLength);
     var segments = Math.ceil(length / segmentLength);
     return {
       segments: segments,
-      charsAvailableInLastSegment: charsAvailableInLastSegment
+      charsAvailableInLastSegment: charsUsedInLastSegment ?
+        segmentLength - charsUsedInLastSegment :
+        0
     };
   };
 
