@@ -503,10 +503,13 @@ form.bottom[role="search"].messages-compose-form {
   font-size: 1.8rem;
   text-align: left;
   position: absolute;
-  right: 0;
-  bottom: 4rem;
-  padding: 0.5rem 1rem;
-  width: 4rem;
+  height: 4.4rem;
+  left: 0;
+  line-height: 1.8rem;
+  top: -5rem;
+  padding-top: 0;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 #messages-compose-form {
